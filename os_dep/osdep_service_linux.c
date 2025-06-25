@@ -14,6 +14,7 @@
  *****************************************************************************/
 #define _OSDEP_SERVICE_LINUX_C_
 #include <drv_types.h>
+#include <linux/random.h>
 
 #ifdef DBG_MEMORY_LEAK
 ATOMIC_T _malloc_cnt = ATOMIC_INIT(0);
@@ -847,7 +848,8 @@ u64 rtw_division64(u64 x, u64 y)
 inline u32 rtw_random32(void)
 {
 #if (LINUX_VERSION_CODE >= KERNEL_VERSION(3, 8, 0))
-	return prandom_u32();
+	static struct prandom_state prng;
+	return prandom_u32_state(&prng);:contentReference[oaicite:16]{index=16}
 #elif (LINUX_VERSION_CODE <= KERNEL_VERSION(2, 6, 18))
 	u32 random_int;
 	get_random_bytes(&random_int , 4);
